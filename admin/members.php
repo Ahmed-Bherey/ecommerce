@@ -40,7 +40,7 @@ if(isset($_GET['do'])){
                 <td><?php echo $row["email"]?></td>
                 <td><?php echo $row["created_at"]?></td>
                 <td>
-                    <a class="btn btn-secondary" href="?do=show&userid=<?php echo $row["user_id"]?>"><i
+                    <a class="btn btn-info" href="?do=show&userid=<?php echo $row["user_id"]?>"><i
                             class="fas fa-eye"></i></a>
                     <a class="btn btn-warning" href="?do=edit&userid=<?php echo $row["user_id"]?>"><i
                             class="fas fa-edit"></i></a>
