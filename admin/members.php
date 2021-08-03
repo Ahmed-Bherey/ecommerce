@@ -99,7 +99,7 @@ if(isset($_GET['do'])){
 <div class="container">
     <h1 class="text-center">Edit Member</h1>
     <form method="post" action="?do=update">
-    <div class="mb-3">
+        <div class="mb-3">
             <input type="hidden" class="form-control" value="<?= $row['user_id']?>" name="userid">
         </div>
         <div class="mb-3">

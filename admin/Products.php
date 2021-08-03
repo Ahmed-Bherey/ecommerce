@@ -89,14 +89,14 @@ if(isset($_GET['do'])){
         $catname  = $_POST['catname'];
         $catprice = $_POST['catprice'];
         $stmt = $con->prepare("UPDATE cats SET cat_name=? , cat_price=? WHERE cats_id=?");
-        $stmt->execute(array($catname,$catprice));
+        $stmt->execute(array($catname,$catprice,$catsid));
     }
 ?>
 <?php elseif($do == "delete"):?>
 
 <?php elseif($do == "show"):?>
 <?php 
-        $productid = $_GET["productid"] ;
+        $productid = $_GET["catsid"] ;
         $stmt= $con->prepare("SELECT * FROM cats WHERE cats_id=?");
         $stmt->execute(array($productid));
         $row = $stmt->fetch();
