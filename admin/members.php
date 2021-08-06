@@ -27,6 +27,7 @@ if(isset($_GET['do'])){
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">Photo</th>
                 <th scope="col">UserName</th>
                 <th scope="col">Email</th>
                 <th scope="col">Date</th>
@@ -36,6 +37,8 @@ if(isset($_GET['do'])){
         <tbody>
             <?php foreach($rows as $row):?>
             <tr>
+                <th scope="row"><img src="public\img\uploded\members\<?php echo $row["path"]?>" alt=""
+                        style="height:15vh"></th>
                 <th scope="row"><?php echo $row["username"]?></th>
                 <td><?php echo $row["email"]?></td>
                 <td><?php echo $row["created_at"]?></td>
@@ -44,7 +47,7 @@ if(isset($_GET['do'])){
                             class="fas fa-eye"></i></a>
                     <a class="btn btn-warning" href="?do=edit&userid=<?php echo $row["user_id"]?>"><i
                             class="fas fa-edit"></i></a>
-                    <a class="btn btn-danger" href="?do=delete"><i class="fas fa-trash-alt"></i></a>
+                    <a class="btn btn-danger" href="?do=manage&userid=<?php echo $row["user_id"]?>"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
             <?php endforeach?>
@@ -54,7 +57,7 @@ if(isset($_GET['do'])){
 <?php elseif($do == "add"):?>
 <div class="container">
     <h1 class="Add members"></h1>
-    <form method="post" action="?do=insert">
+    <form method="post" action="?do=insert" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label">User Name</label>
             <input type="text" class="form-control" name="username">
@@ -71,20 +74,52 @@ if(isset($_GET['do'])){
             <label class="form-label">Full Name</label>
             <input type="text" class="form-control" name="fullname">
         </div>
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Uploud Photo</label>
+            <input class="form-control" type="file" id="formFile" name="avatar">
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 <?php elseif($do == "insert"):?>
 <?php
         if($_SERVER['REQUEST_METHOD'] == "POST"){
+            // $avatar   = $_FILES['avatar'];
+            $avatarName = $_FILES['avatar']['name'];
+            $avatarType = $_FILES['avatar']['type'];
+            $avatarTmpName = $_FILES['avatar']['tmp_name'];
+            $avatarError = $_FILES['avatar']['error'];
+            $avatarSize = $_FILES['avatar']['size'];
+
+            $avatarAllowedExtension = array("image/jpeg" , "image/png" , "image/jpg");
+            $avatar = rand(0 , 1000)."_".$avatarName;
+            $destntion = "public\img\uploded\members\\".$avatar;
+            if(in_array($avatarType , $avatarAllowedExtension)){
+                move_uploaded_file($avatarTmpName , $destntion);
+            }
             $username = $_POST['username'];
             $email    = $_POST['email'];
             $password = sha1($_POST['password']);
             $fullname = $_POST['fullname'];
 
-            $stmt = $con->prepare("INSERT INTO users (username,password,email,fullname,groupid,created_at) VALUES(?,?,?,?,0,now())");
-            $stmt->execute(array($username,$password,$email,$fullname));
+            $formErrors = array();
+            if(empty($username)){
+                $formErrors[] = "username is empty";
+            }
+            if(strlen($username)< 4){
+                $formErrors[] = "username is less than 4 c";
+            }
+            if(empty($formErrors)){
+                $stmt = $con->prepare("INSERT INTO users (username,password,email,fullname,groupid,created_at,path) VALUES(?,?,?,?,0,now(),?)");
+            $stmt->execute(array($username,$password,$email,$fullname,$avatar));
             header("location:members.php?do=add");
+            }else{
+                foreach($formErrors as $error){
+                    echo $error . "<br>" ;
+                }
+            }
+            
+            
         }
     ?>
 <?php elseif($do == "edit"):?>
@@ -138,7 +173,14 @@ if(isset($_GET['do'])){
     }
     ?>
 <?php elseif($do == "delete"):?>
-
+<?php
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $userid     = $_POST['userid'];
+        $stmt = $con->prepare("DELETE * FROM users WHERE user_id=?");
+        $stmt->execuet(array($userid));
+        header("location:members.php");
+    }
+?>
 <?php elseif($do == "show"):?>
 <?php 
         $userid = $_GET["userid"] ;
