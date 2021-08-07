@@ -15,14 +15,18 @@
           <a class="nav-link" href="Members.php">Members</a>
         </li>
         <li class="nav-item">
+        <?php if($_SESSION['GROUB_ID']== 1):?>
           <a class="nav-link" href="category.php">Categories</a>
+          <?php else:?>
+
+          <?php endif?>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <?php echo $_SESSION['FULL_NAME']?>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="?do=edit&userid=<?= $_SESSION['USER_ID']?>">Profile</a></li>
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="logout.php">Logout</a></li>

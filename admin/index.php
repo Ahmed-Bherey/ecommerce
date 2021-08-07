@@ -9,7 +9,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     $adminpassword = $_POST['adminpassword'];
     $hashedhpass = sha1($adminpassword);
 
-    $stmt = $con->prepare("SELECT * FROM users WHERE username=? AND password=? AND groupid=1");
+    $stmt = $con->prepare("SELECT * FROM users WHERE username=? AND password=? AND groupid!=0");
     $stmt->execute(array($adminusername , $hashedhpass ));
     $row = $stmt->fetch();
     $count = $stmt->rowCount();

@@ -16,7 +16,10 @@ if(isset($_GET['do'])){
 <?php if($do == "manage"):?>
 
 <?php
-        $stmt= $con->prepare("SELECT * FROM cats");
+$recorded_per_page = 5;
+$page = isset($_GET['page'])?$_GET['page']:1;
+$start_from = ($page-1)* $recorded_per_page;
+        $stmt= $con->prepare("SELECT * FROM cats LIMIT $start_from , $recorded_per_page");
         $stmt->execute();
         $rows = $stmt->fetchAll();
     ?>
@@ -52,6 +55,21 @@ if(isset($_GET['do'])){
             <?php endforeach?>
         </tbody>
     </table>
+    <?php
+        $stmt = $con->prepare("SELECT * FROM users WHERE groupid=0 ORDER BY user_id DESC");
+        $stmt->execute();
+        $total_record = $stmt->rowCount();
+        $total_page = ceil($total_record / $recorded_per_page);
+        $start_loop = 1;
+        $end_loop = $total_page;
+    ?>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+        <?php for($i =$start_loop; $i<=$end_loop; $i++):?>
+        <li class="page-item"><a class="page-link" href="#"><?php echo $i?></a></li>
+        <?php endfor?>
+        </ul>
+    </nav>
 </div>
 <?php elseif($do == "add"):?>
 

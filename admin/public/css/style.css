@@ -1,0 +1,36 @@
+body {
+    background-color: rgb(192, 189, 189);
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    height: 100vh;
+    position: relative;
+}
+
+.container .row {
+    text-align: center;
+    top: 30%;
+    left: 30%;
+    position: absolute;
+    transform: translate(-30%, -30%);
+    -webkit-transform: translate(-30%, -30%);
+    -moz-transform: translate(-30%, -30%);
+    -ms-transform: translate(-30%, -30%);
+    -o-transform: translate(-30%, -30%);
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    font-size: 60px;
+}
+
+p {
+    font-size: 30px;
+    color: rgb(21, 82, 21);
+    font-weight: bold;
+}
+
+.row .icon {
+    color: darkslategray;
+}
