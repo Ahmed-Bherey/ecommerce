@@ -29,26 +29,22 @@ $start_from = ($page-1)* $recorded_per_page;
     <table class="table">
         <thead>
             <tr>
-            <th scope="col">ID</th>
-                <th scope="col">UserName</th>
-                <th scope="col">Price</th>
-                <th scope="col">Date</th>
-                <th scope="col">Control</th>
+            
+                <th scope="col">Category Name</th>
+                <th scope="col">Controls</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach($rows as $row):?>
             <tr>
-            <th scope="row"><?php echo $row["cats_id"]?></th>
+            
                 <th scope="row"><?php echo $row["cat_name"]?></th>
-                <td><?php echo $row["cat_price"]?></td>
-                <td><?php echo $row["created_at"]?></td>
                 <td>
-                    <a class="btn btn-info" href="products.php?do=show&catsid=<?= $row["cats_id"]?>"
+                    <a class="btn btn-info" href="products.php?do=show&catsid=<?= $row["cat_id"]?>"
                         title="Show"><i class="fas fa-eye"></i></a>
-                    <a class="btn btn-warning" href="Products.php?do=edit&catsid=<?= $row["cats_id"]?>"
+                    <a class="btn btn-warning" href="Products.php?do=edit&catsid=<?= $row["cat_id"]?>"
                         title="Edit"><i class="fas fa-edit"></i></a>
-                    <a class="btn btn-danger" href="Products.php?do=delete&catsid=<?= $row["cats_id"]?>"
+                    <a class="btn btn-danger" href="Products.php?do=delete&catsid=<?= $row["cat_id"]?>"
                         title="Delete"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
@@ -86,7 +82,7 @@ $start_from = ($page-1)* $recorded_per_page;
     <h1 class="text-center">Edit Products</h1>
     <form method="post" action="?do=update">
     <div class="mb-3">
-            <input type="text" class="form-control" value="<?= $row['cats_id']?>" name="catsid">
+            <input type="text" class="form-control" value="<?= $row['cat_id']?>" name="catsid">
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Product Name</label>
@@ -115,7 +111,7 @@ $start_from = ($page-1)* $recorded_per_page;
 <?php elseif($do == "show"):?>
 <?php 
         $productid = $_GET["catsid"] ;
-        $stmt= $con->prepare("SELECT * FROM cats WHERE cats_id=?");
+        $stmt= $con->prepare("SELECT * FROM cats WHERE cat_id=?");
         $stmt->execute(array($productid));
         $row = $stmt->fetch();
 

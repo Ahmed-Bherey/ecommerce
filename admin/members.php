@@ -53,7 +53,7 @@ if(isset($_GET['do'])){
                     <?php if($_SESSION['GROUB_ID']== 1):?>
                     <a class="btn btn-warning" href="?do=edit&userid=<?php echo $row["user_id"]?>"><i
                             class="fas fa-edit"></i></a>
-                    <a class="btn btn-danger" href="?do=manage&userid=<?php echo $row["user_id"]?>"><i
+                    <a class="btn btn-danger" href="delete.php?userid=<?php echo $row["user_id"]?>"><i
                             class="fas fa-trash-alt"></i></a>
                     <?php endif?>
                 </td>
@@ -199,7 +199,7 @@ if(isset($_GET['do'])){
 <?php
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $userid     = $_POST['userid'];
-        $stmt = $con->prepare("DELETE * FROM users WHERE user_id=?");
+        $stmt = $con->prepare("DELETE FROM users WHERE user_id=");
         $stmt->execuet(array($userid));
         header("location:members.php");
     }

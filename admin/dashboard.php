@@ -16,9 +16,9 @@
                 </div>
             </div><div class="col-6">
                 <div class="cats">
-                <p>All Category</p>
+                <p>All Categories</p>
                 <i class="fas fa-shopping-cart icon" title="Category"></i>
-                    (<?php echo countItem("cats_id " , "cats")?>)
+                    (<?php echo countItem("cat_id " , "cats")?>)
                 </div>
             </div>
         </div>

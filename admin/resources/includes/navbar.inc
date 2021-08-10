@@ -15,6 +15,9 @@
           <a class="nav-link" href="Members.php">Members</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="products.php">Products</a>
+        </li>
+        <li class="nav-item">
         <?php if($_SESSION['GROUB_ID']== 1):?>
           <a class="nav-link" href="category.php">Categories</a>
           <?php else:?>
