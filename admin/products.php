@@ -16,7 +16,7 @@ if(isset($_GET['do'])){
 
 <?php if($do == "manage"):?>
 <?php
-    $stmt = $con->prepare("SELECT * FROM products");
+    $stmt = $con->prepare("SELECT products.* , cats.cat_name FROM products INNER JOIN cats ON cats.cat_id=products.cat_id");
     $stmt->execute();
     $rows = $stmt->fetchAll();
 ?>
@@ -29,7 +29,7 @@ if(isset($_GET['do'])){
                 <th scope="col">Product Name</th>
                 <th scope="col">Product Price</th>
                 <th scope="col">Desc</th>
-                <th scope="col">Cat id</th>
+                <th scope="col">Category</th>
                 <th scope="col">Contrils</th>
             </tr>
         </thead>
@@ -39,7 +39,7 @@ if(isset($_GET['do'])){
                 <th scope="row"><?= $row['productname']?></th>
                 <td><?= $row['price']?></td>
                 <td><?= $row['description']?></td>
-                <td><?= $row['cat_id']?></td>
+                <td><?= $row['cat_name']?></td>
                 <td>
                     <a class="btn btn-info" href="?do=show&productid=<?= $row['product_id']?>"><i
                             class="fas fa-eye"></i></a>
@@ -68,10 +68,17 @@ if(isset($_GET['do'])){
                 <label for="exampleInputPassword1" class="form-label">Desc</label>
                 <input type="text" class="form-control" name="desc">
             </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Cat id</label>
-                <input type="text" class="form-control" name="catid">
-            </div>
+            <?php
+                $stmt = $con->prepare("SELECT * FROM cats");
+                $stmt->execute();
+                $rows = $stmt->fetchAll();
+            ?>
+            <select class="form-select" name="category">
+                <option selected>Select Category</option>
+                <?php foreach($rows as $row):?>
+                <option value="<?= $row['cat_id']?>"><?= $row['cat_name']?></option>
+                <?php endforeach?>
+            </select>
             <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
@@ -82,10 +89,10 @@ if(isset($_GET['do'])){
         $productname  = $_POST['productname'];
         $productprice = $_POST['productprice'];
         $descc         = $_POST['desc'];
-        $catid        = $_POST['catid'];
+        $category        = $_POST['category'];
 
                 $stmt = $con->prepare("INSERT INTO products (productname,price,description,cat_id) VALUES(?,?,?,?)");
-                $stmt->execute(array($productname,$productprice,$descc,$catid));
+                $stmt->execute(array($productname,$productprice,$descc,$category));
                 header("location:products.php");
     }
 ?>
